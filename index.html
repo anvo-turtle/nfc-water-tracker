@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Intake Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            color: #007bff;
+        }
+        #count {
+            font-size: 48px;
+            color: #28a745;
+        }
+        button {
+            font-size: 24px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #increment {
+            background-color: #28a745;
+            color: white;
+        }
+        #decrement {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Water Intake Tracker</h1>
+    <p>Current intake: <span id="count">0</span> units</p>
+    <button id="increment" onclick="increment()">+1</button>
+    <button id="decrement" onclick="decrement()">-1</button>
+
+    <script>
+        let count = parseInt(localStorage.getItem('waterCount')) || 0;
+
+        function updateDisplay() {
+            document.getElementById('count').innerText = count;
+        }
+
+        function increment() {
+            count++;
+            localStorage.setItem('waterCount', count);
+            updateDisplay();
+        }
+
+        function decrement() {
+            if (count > 0) {
+                count--;
+                localStorage.setItem('waterCount', count);
+                updateDisplay();
+            }
+        }
+
+        // Automatically increment on page load (for NFC scan or visit)
+        increment();
+    </script>
+</body>
+</html>
