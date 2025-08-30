@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Water Intake Tracker</title>
     <style>
         body {
@@ -17,6 +20,11 @@
         #count {
             font-size: 48px;
             color: #28a745;
+        }
+        #lastFinished {
+            font-size: 24px;
+            color: #555;
+            margin-top: 20px;
         }
         button {
             font-size: 24px;
@@ -38,27 +46,49 @@
 </head>
 <body>
     <h1>Water Intake Tracker</h1>
-    <p>Current intake: <span id="count">0</span> units</p>
+    <p>Current intake: <span id="count">0</span> bottles</p>
+    <p id="lastFinished">Last bottle finished: None</p>
     <button id="increment" onclick="increment()">+1</button>
     <button id="decrement" onclick="decrement()">-1</button>
 
     <script>
         let count = parseInt(localStorage.getItem('waterCount')) || 0;
+        let timestamps = JSON.parse(localStorage.getItem('waterTimestamps')) || [];
+
+        function formatDateTime(date) {
+            return date.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
 
         function updateDisplay() {
             document.getElementById('count').innerText = count;
+            if (timestamps.length > 0) {
+                document.getElementById('lastFinished').innerText = `Last bottle finished: ${formatDateTime(new Date(timestamps[timestamps.length - 1]))}`;
+            } else {
+                document.getElementById('lastFinished').innerText = 'Last bottle finished: None';
+            }
         }
 
         function increment() {
             count++;
+            timestamps.push(new Date().toISOString());
             localStorage.setItem('waterCount', count);
+            localStorage.setItem('waterTimestamps', JSON.stringify(timestamps));
             updateDisplay();
         }
 
         function decrement() {
             if (count > 0) {
                 count--;
+                timestamps.pop(); // Remove the most recent timestamp
                 localStorage.setItem('waterCount', count);
+                localStorage.setItem('waterTimestamps', JSON.stringify(timestamps));
                 updateDisplay();
             }
         }
