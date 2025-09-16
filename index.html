@@ -35,6 +35,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .counter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between +1 and -1 */
+            margin-top: 35px; /* Matches your existing button margin-top */
+        }
         #increment {
             background-color: #28a745;
             color: white;
@@ -77,8 +83,9 @@
             <div id="progressFill"></div>
         </div>
         <p id="lastFinished">Last bottle finished: None</p>
-        <button id="increment" onclick="increment()">+1</button>
-        <button id="decrement" onclick="decrement()">-1</button>
+        <div class="counter-buttons">
+            <button id="increment" onclick="increment()">+1</button>
+            <button id="decrement" onclick="decrement()">-1</button>
         </div>
         <button onclick="showSettings()">Settings</button>
     </div>
